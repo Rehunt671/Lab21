@@ -33,6 +33,7 @@ void Unit::create(string t){
 		hpmax = rand()%20+90;
 		atk = rand()%5+14;
 		def = rand()%3+9;
+	// Hp 90-109 atk 14-18 def 9-11
 	}else if(t == "Monster"){
 		type = "Monster";
 		name = "Kraken";
@@ -62,15 +63,34 @@ void Unit::showStatus(){
 void Unit::newTurn(){
 	guard_on = false;
 }
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//Write function members isDead(), guard(), heal(), beAttacked(), and attack() here//
-/////////////////////////////////////////////////////////////////////////////////////
-
-
-
+int Unit::attack(Unit & c){
+	return c.beAttacked(atk);
+}
+int Unit::beAttacked(int a){
+	int dmg = a-def;
+	if(guard_on) dmg /= 3;
+	hp -= dmg;
+	return dmg;
+}
+int Unit::heal(){
+	int h = rand()%21+10,v = 0;
+	if((hp+h) > hpmax){
+		v = hpmax - hp;
+		hp = hpmax;
+	} 
+	else {
+		v = h;
+		hp += h;
+	}
+	return v;
+}	
+void Unit::guard(){
+	guard_on = true;
+}
+bool Unit::isDead(){
+	if(hp > 0 ) return false;
+	else return true;
+}
 void drawScene(char p_action,int p,char m_action,int m){
 	cout << "                                                       \n";
 	if(p_action == 'A'){
